@@ -51,7 +51,8 @@ void loop() {
   wdt_reset();
   wdt_disable();
 
-  //Serial.flush(); //the system is going to sleep while it's still sending the serial data.
+  Serial.flush(); //the system is going to sleep while it's still sending the serial data.
+  
   uint8_t countSleep = 0;
   while (countSleep < 2) {
     LowPower.powerDown(SLEEP_4S, ADC_OFF, BOD_OFF);
