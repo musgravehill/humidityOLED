@@ -71,33 +71,29 @@ void SYS_DISPLAY_INFO() {
   //возможно, тут надо dht.setup после долгого сна
   int16_t humidity = (int) dht.getHumidity();
   int16_t temperature = (int) dht.getTemperature();
-  int16_t batteryVoltage = 0.3334 * analogRead(BATT_CONTROL_PIN_1V1); // 100 * 3.24V = 324
+  float batteryVoltage = 0.003363075 * analogRead(BATT_CONTROL_PIN_1V1);
   // 1M, 470K divider across battery and using internal ADC ref of 1.1V
   // Sense point is bypassed with 0.1 uF cap to reduce noise at that point
   // ((1e6+470e3)/470e3)*1.1 = Vmax = 3.44 Volts
   // 3.44/1023 = Volts per bit = 0.003363075
 
   myOLED.clrScr();
-  
+
   myOLED.setFont(SmallFont);
-  myOLED.print("%", 28, 10);
+  myOLED.print("%", 55, 10);
+  myOLED.print("o", 122, 0);
+  myOLED.print("V", 55, 42);
+
   myOLED.setFont(BigNumbers);
   myOLED.printNumI(humidity, 0, 0);
-  myOLED.printNumI(temperature, 34, 0);
-  
-  myOLED.setFont(MediumNumbers);
-  myOLED.printNumF(batteryVoltage, 1, 74, 4);
-  myOLED.setFont(SmallFont);
-  myOLED.print("o", 122, 0);
-   
-  //uptime
-  myOLED.setFont(SmallFont);
-  myOLED.print("UPTIME DAYS", 0, 40);
-  myOLED.printNumI(millis() / 86400000, 72, 40); 
+  myOLED.printNumI(temperature, 66, 0);
+  myOLED.printNumF(batteryVoltage, 2, 0, 32);  
 
   myOLED.update();
 
-  delay(21000); //21s display, then sleep
+  delay(7000); //21s display, then sleep
+  myOLED.clrScr();
+  myOLED.update();
 
 }
 
