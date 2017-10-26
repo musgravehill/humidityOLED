@@ -45,12 +45,15 @@ void setup() {
 
   delay(3000); //reduction of power fluctuation on powerUp
 
-  pinMode(BUTTON_WAKEUP_PIN, INPUT);
+  pinMode(BUTTON_WAKEUP_PIN, INPUT_PULLUP);
 
   dht.setup(DHT22_DATA_PIN);  //delay(57000); //for PIR calibrating 60s
 
   myOLED.begin();
-  myOLED.setBrightness(1);
+  myOLED.setBrightness(0);
+  delay(20);
+  myOLED.setOff();
+  delay(20);
 }
 
 void loop() {
@@ -77,6 +80,9 @@ void SYS_DISPLAY_INFO() {
   // ((1e6+470e3)/470e3)*1.1 = Vmax = 3.44 Volts
   // 3.44/1023 = Volts per bit = 0.003363075
 
+  myOLED.setOn();
+  delay(20);
+
   myOLED.clrScr();
 
   myOLED.setFont(SmallFont);
@@ -87,14 +93,16 @@ void SYS_DISPLAY_INFO() {
   myOLED.setFont(BigNumbers);
   myOLED.printNumI(humidity, 0, 0);
   myOLED.printNumI(temperature, 66, 0);
-  myOLED.printNumF(batteryVoltage, 2, 0, 32);  
+  myOLED.printNumF(batteryVoltage, 2, 0, 32);
 
   myOLED.update();
 
   delay(7000); //21s display, then sleep
   myOLED.clrScr();
   myOLED.update();
-
+  delay(20);
+  myOLED.setOff();
+  delay(20);
 }
 
 void wakeUp() {
