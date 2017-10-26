@@ -74,11 +74,11 @@ void SYS_DISPLAY_INFO() {
   //возможно, тут надо dht.setup после долгого сна
   int16_t humidity = (int) dht.getHumidity();
   int16_t temperature = (int) dht.getTemperature();
-  float batteryVoltage = 0.003363075 * analogRead(BATT_CONTROL_PIN_1V1);
-  // 1M, 470K divider across battery and using internal ADC ref of 1.1V
+  float batteryVoltage = 0,005421 * analogRead(BATT_CONTROL_PIN_1V1);
+  // 1M, 220K divider across battery and using internal ADC ref of 1.1V
   // Sense point is bypassed with 0.1 uF cap to reduce noise at that point
-  // ((1e6+470e3)/470e3)*1.1 = Vmax = 3.44 Volts
-  // 3.44/1023 = Volts per bit = 0.003363075
+  // ((1e6+220e3)/220e3)*1.1 = Vmax = 5,5454545454545454545454545454545 Volts
+  // 5,5454545454545454545454545454545/1023 = Volts per bit = 0.003363075
 
   myOLED.setOn();
   delay(20);
