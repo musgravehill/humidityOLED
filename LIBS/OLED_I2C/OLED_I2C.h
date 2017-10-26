@@ -100,6 +100,8 @@ class OLED
 	public:
 		OLED(uint8_t data_pin, uint8_t sclk_pin, uint8_t rst_pin);
 		OLED(uint8_t data_pin, uint8_t sclk_pin);
+		void	setOff();
+		void	setOn();
 		void	begin();
 		void	update();
 		void	setBrightness(uint8_t value);

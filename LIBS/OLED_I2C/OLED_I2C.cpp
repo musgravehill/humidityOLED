@@ -46,6 +46,8 @@ OLED::OLED(uint8_t data_pin, uint8_t sclk_pin)
 	_rst_pin = RST_NOT_IN_USE;
 }
 
+
+
 void OLED::begin()
 {
 	if (_rst_pin != RST_NOT_IN_USE)
@@ -102,6 +104,13 @@ void OLED::begin()
 	clrScr();
 	update();
 	cfont.font=0;
+}
+
+void OLED::setOff(){ 
+   _sendTWIcommand(SSD1306_DISPLAY_OFF);
+}
+void OLED::setOn(){ 
+  _sendTWIcommand(SSD1306_DISPLAY_ON);
 }
 
 void OLED::clrScr()
