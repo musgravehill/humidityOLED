@@ -9,7 +9,6 @@ void OLED_init() {
 void OLED_display() {
   int16_t humidity, temperature;
   float batteryVoltage;
-  bool displayBlinker = false;
 
   delay(5);
   myOLED.setOn();
@@ -27,7 +26,7 @@ void OLED_display() {
   delay(dht.getMinimumSamplingPeriod()); //dht22 need 2s pause between requesting data
 
 
-  for (int i = 0; i < 5; i++) {
+  for (int i = 1; i <= 5; i++) {
     humidity = (int) dht.getHumidity();
     temperature = (int) dht.getTemperature();
     batteryVoltage = 0.00596285 * analogRead(BATT_CONTROL_PIN_1V1);
@@ -46,6 +45,7 @@ void OLED_display() {
     myOLED.printNumI(temperature, 66, 0);
     myOLED.printNumF(batteryVoltage, 2, 0, 32);
     OLED_render_batt(batteryVoltage);
+    myOLED.drawLine(0, 28, 26*i, 28);
     myOLED.update();
 
     delay(dht.getMinimumSamplingPeriod());//dht22 need 2s pause between requesting data
@@ -60,23 +60,29 @@ void OLED_display() {
 
 void OLED_render_batt(float batteryVoltage) {
   if (batteryVoltage <= BATT_min) {
+    myOLED.setFont(SmallFont);
+    if (OLED_blinker_state) {
+      myOLED.print(F(" LOW BATT "), 66, 52);
+      OLED_blinker_state = false;
+    } else {
+      myOLED.print(F("*LOW BATT*"), 66, 52);
+      OLED_blinker_state = true;
+    }
   }
 
   batteryVoltage = constrain(batteryVoltage, BATT_min,  BATT_max);
-  int countLines = map(batteryVoltage, BATT_min, BATT_max, 0, 61);
-  myOLED.drawRect(66, 32, 127, 48);
+  int countLines = map(batteryVoltage*100, BATT_min*100, BATT_max*100, 0, (123-66));
+  myOLED.drawRect(66, 32, 123, 48);  
+  myOLED.drawLine(124, 36, 124, 45);
+  myOLED.drawLine(125, 36, 125, 45);
+  myOLED.drawLine(126, 36, 126, 45);
+  myOLED.drawLine(127, 36, 127, 45);
+   
   for (int i = 0; i <= countLines; i++) {
-    myOLED.drawLine(66 + i, 32, 66 + i, 48); 
+    myOLED.drawLine(66 + i, 32, 66 + i, 48);
   }
 
-  myOLED.setFont(SmallFont);
-  if (displayBlinker) {
-    myOLED.print(F(" LOW BATT "), 66, 52);
-    displayBlinker = false;
-  } else {
-    myOLED.print(F("*LOW BATT*"), 66, 52);
-    displayBlinker = true;
-  }
+
 
 
 }

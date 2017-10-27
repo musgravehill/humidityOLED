@@ -23,8 +23,9 @@ extern uint8_t BigNumbers[]; //14*24px
 
 //====================================== SYS =====================================================
 #define BATT_CONTROL_PIN_1V1 A0 //hardcoded in PCB voltage divider
-#define BATT_max 4.21
-#define BATT_min 3.33
+#define BATT_max 4.20
+#define BATT_min 3.34
+bool OLED_blinker_state = true;
 
 //======================================= DHT humidity sensor =====================================
 #define DHT22_DATA_PIN 3
