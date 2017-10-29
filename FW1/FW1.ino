@@ -3,7 +3,7 @@
   dht22  AM2302
   OLED 128*64 i2c
 */
-#include <avr/pgmspace.h>
+//#include <avr/pgmspace.h>
 
 #include "LowPower.h"
 
