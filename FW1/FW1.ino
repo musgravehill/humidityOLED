@@ -17,6 +17,7 @@ OLED  myOLED(SDA, SCL);  //OLED SDA A4, SCL A5
 extern uint8_t SmallFont[]; //6*8px
 extern uint8_t MediumNumbers[]; //12*16px
 extern uint8_t BigNumbers[]; //14*24px
+bool OLED_blinker_state = true;
 
 //======================================= SENSOR DATA ==========================================
 int16_t humidity = 0;

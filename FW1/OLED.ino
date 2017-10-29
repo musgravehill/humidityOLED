@@ -37,7 +37,13 @@ void OLED_display() {
 void OLED_render_batt(float batteryVoltage) {
   if (batteryVoltage <= BATT_min) {
     myOLED.setFont(SmallFont);
-    myOLED.print(F(" LOW BATT "), 66, 52);
+    if (OLED_blinker_state) {
+      myOLED.print(F(" LOW BATT "), 66, 52);
+      OLED_blinker_state = false;
+    } else {
+      myOLED.print(F("*LOW BATT*"), 66, 52);
+      OLED_blinker_state = true;
+    }
   }
 
   batteryVoltage = constrain(batteryVoltage, BATT_min,  BATT_max);
