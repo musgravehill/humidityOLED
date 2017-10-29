@@ -5,18 +5,23 @@
 */
 //#include <avr/pgmspace.h>
 
-#include "LowPower.h"
-
 #include <SPI.h>
+#include <stdint.h>
+#include <avr/wdt.h>
+#include "LowPower.h" //LP
 #include "DHT.h"
-DHT dht;
 
+//============================================ OLED ===========================================
 #include <OLED_I2C.h>
 OLED  myOLED(SDA, SCL);  //OLED SDA A4, SCL A5
 extern uint8_t SmallFont[]; //6*8px
 extern uint8_t MediumNumbers[]; //12*16px
 extern uint8_t BigNumbers[]; //14*24px
 
+//======================================= SENSOR DATA ==========================================
+int16_t humidity = 0;
+int16_t temperature = 0;
+float batteryVoltage = 0.0;
 
 //====================================== BUTTON ================================================
 #define BUTTON_WAKEUP_PIN 2 //only d2 interrupt unSleep
@@ -25,9 +30,9 @@ extern uint8_t BigNumbers[]; //14*24px
 #define BATT_CONTROL_PIN_1V1 A0 //hardcoded in PCB voltage divider
 #define BATT_max 4.20
 #define BATT_min 3.34
-bool OLED_blinker_state = true;
 
 //======================================= DHT humidity sensor =====================================
+DHT dht;
 #define DHT22_DATA_PIN 3
 
 void setup() {
@@ -37,18 +42,20 @@ void setup() {
 }
 
 void loop() {
-  // Allow wake up pin to trigger interrupt on low.
   attachInterrupt(0, wakeUp, LOW); //D2
-  // Enter power down state with ADC and BOD module disabled.
-  // Wake up when wake up pin is low.
   LowPower.powerDown(SLEEP_FOREVER, ADC_OFF, BOD_OFF); //43mkA
-  // Disable external pin interrupt on wake up pin.
   detachInterrupt(0);
-  //do staff here, if button activated
   OLED_display();
+
+  //reset base after 1 day uptime
+  if ((int) millis() > 86400000L) {
+    wdt_enable(WDTO_2S);
+    delay(2500);
+  }
 }
 
 void wakeUp() {
+
 }
 
 
